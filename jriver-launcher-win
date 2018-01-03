@@ -4,33 +4,37 @@ import socket
 import subprocess
 import datetime
 
-ApplicationName = 'Media Center 21.exe'
-ApplicationPath = 'C:\\Program Files (x86)\\J River\\Media Center 21\\'
-wolPort = 9
-inputBin = 0x00
-
 def isTaskRunning(ApplicationName):
     tasklist = os.popen('tasklist /v | findstr "' + ApplicationName + '"')
     if ApplicationName in tasklist:
         return True
     return False
 
-def checkForWOL(inputBin):
+def checkForWOL(InputBin):
     wOLServer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     wOLServer.bind(("", wolPort))
     print(datetime.datetime.now(), ":\t", "Listening on 0.0.0.0 for Wake-on-LAN on port", wolPort, '(UDP)')
     wOLData = wOLServer.recv(1024)
     wOLServer.shutdown(0)
-    if 0xff in wOLData:
+    if InputBin in wOLData:
         return True
     else:
         return False
 
-while (True):
-    if checkForWOL(0xFF):
-        print(datetime.datetime.now(),":\t","Wake-on-LAN received")
+def openApp(ApplicationName, InputBin):
+    if checkForWOL(InputBin):
+        print(datetime.datetime.now(), ":\t", "Wake-on-LAN received")
         if isTaskRunning(ApplicationName):
-            print(datetime.datetime.now(),":\t",ApplicationName + 'is already running')
+            print(datetime.datetime.now(), ":\t", ApplicationName + 'is already running')
+            return False
         else:
-            print(datetime.datetime.now(),":\t",'Starting:', ApplicationName)
+            print(datetime.datetime.now(), ":\t", 'Starting:', ApplicationName)
             subprocess.call([ApplicationPath + ApplicationName], 0)
+            return True
+
+while (True):
+    ApplicationName = 'Media Center 21.exe'
+    ApplicationPath = 'C:\\Program Files (x86)\\J River\\Media Center 21\\'
+    wolPort = 9
+    InputBin = 0xFF
+    openApp(ApplicationName,InputBin)
