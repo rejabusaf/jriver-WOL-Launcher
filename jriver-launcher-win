@@ -21,7 +21,7 @@ def checkForWOL(InputBin):
     else:
         return False
 
-def openApp(ApplicationName, InputBin):
+def openApp(ApplicationName, ApplicationPath ,InputBin):
     if checkForWOL(InputBin):
         print(datetime.datetime.now(), ":\t", "Wake-on-LAN received")
         if isTaskRunning(ApplicationName):
@@ -37,4 +37,5 @@ while (True):
     ApplicationPath = 'C:\\Program Files (x86)\\J River\\Media Center 21\\'
     wolPort = 9
     InputBin = 0xFF
-    openApp(ApplicationName,InputBin)
+
+    openApp(ApplicationName, ApplicationPath, InputBin)
