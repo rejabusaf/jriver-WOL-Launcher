@@ -1,0 +1,30 @@
+
+import os
+import socket
+import subprocess
+import datetime
+
+ApplicationName = 'Media Center 21.exe'
+ApplicationPath = 'C:\\Program Files (x86)\\J River\\Media Center 21\\'
+wolPort = 9
+
+def isTaskRunning(ApplicationName):
+    tasklist = os.popen('tasklist /v | findstr "' + ApplicationName + '"')
+    if ApplicationName in tasklist:
+        return True
+    return False
+
+while (True):
+    wOLServer = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    wOLServer.bind(("", wolPort))
+    print(datetime.datetime.now(),":\t","Listening on 0.0.0.0 for Wake-on-LAN on port",wolPort,'(UDP)')
+    wOLData = wOLServer.recv(1024)
+    if 0xff in wOLData:
+        print(datetime.datetime.now(),":\t","Wake-on-LAN received")
+        wOLServer.shutdown(0)
+        print(datetime.datetime.now(),":\t","Socket Closed")
+        if isTaskRunning(ApplicationName):
+            print(datetime.datetime.now(),":\t",ApplicationName + 'is already running')
+        else:
+            print(datetime.datetime.now(),":\t",'Starting:', ApplicationName)
+            subprocess.call([ApplicationPath + ApplicationName], 0)
