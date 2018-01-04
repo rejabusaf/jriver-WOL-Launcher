@@ -36,6 +36,6 @@ while (True):
     ApplicationName = 'Media Center 21.exe'
     ApplicationPath = 'C:\\Program Files (x86)\\J River\\Media Center 21\\'
     wolPort = 9
-    InputBin = 0xFF
+    InputBin = b'0'
 
     openApp(ApplicationName, ApplicationPath, InputBin)
