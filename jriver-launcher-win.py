@@ -32,10 +32,10 @@ def openApp(ApplicationName, ApplicationPath ,InputBin):
             subprocess.call([ApplicationPath + ApplicationName], 0)
             return True
 
-while (True):
-    ApplicationName = 'Media Center 21.exe'
-    ApplicationPath = 'C:\\Program Files (x86)\\J River\\Media Center 21\\'
-    wolPort = 9
-    InputBin = b'0'
+ApplicationName = 'Media Center 21.exe'
+ApplicationPath = 'C:\\Program Files (x86)\\J River\\Media Center 21\\'
+wolPort = 9
+InputBin = b'0'
 
+while (True):
     openApp(ApplicationName, ApplicationPath, InputBin)
